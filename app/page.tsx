@@ -6,6 +6,8 @@ const featured = products.filter((p) => p.featured);
 const newArrivals = products.filter((p) => p.newArrival);
 
 const marqueeItems = [
+  "Infinity",
+  "Crafted for presence",
   "Designed with restraint",
   "Luxury in simplicity",
   "Quiet confidence",
@@ -18,22 +20,17 @@ export default function Home() {
     <>
       {/* ── 1. Hero Section ─────────────────────────── */}
       <section className="hero-section">
-        <video
-          className="hero-video"
-          autoPlay
-          muted
-          loop
-          playsInline
-        >
+        <video className="hero-video" autoPlay muted loop playsInline>
           <source src="/ts-video-hero.mp4" type="video/mp4" />
         </video>
         <div className="hero-shade" />
         <div className="shell hero-content">
           <div className="hero-layout">
             <div className="hero-primary">
+              <p className="hero-eyebrow">Sydney Atelier · Est. 2024</p>
               <h1>ORÉVIA</h1>
               <p className="hero-line">
-                Timeless silhouettes, crafted for quiet confidence.
+                Timeless silhouettes,<br />crafted for quiet confidence.
               </p>
               <p className="hero-copy">
                 Refined essentials, sculptural tailoring, and evening pieces
@@ -49,24 +46,34 @@ export default function Home() {
               </div>
             </div>
             <aside className="hero-meta-panel" aria-label="Launch details">
-              <span>Debut capsule 01</span>
+              <span className="hero-meta-label">Debut capsule 01</span>
               <strong>Sydney atelier preview</strong>
               <p>
                 Five quiet-luxury pieces released first to the private list.
               </p>
+              <a className="hero-meta-link" href="/#waitlist">
+                Request preview access
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
+              </a>
             </aside>
           </div>
+        </div>
+        <div className="hero-scroll-hint" aria-hidden="true">
+          <span>Scroll</span>
+          <div className="hero-scroll-line" />
         </div>
       </section>
 
       {/* ── 2. Marquee Band ─────────────────────────── */}
       <section className="marquee-band" aria-label="ORÉVIA principles">
         <div>
-          {marqueeItems.map((item) => (
-            <span key={item}>{item}</span>
+          {marqueeItems.map((item, i) => (
+            <span key={`${item}-${i}`}>{item}</span>
           ))}
-          {marqueeItems.map((item) => (
-            <span key={`${item}-repeat`}>{item}</span>
+          {marqueeItems.map((item, i) => (
+            <span key={`${item}-repeat-${i}`} aria-hidden="true">{item}</span>
           ))}
         </div>
       </section>
@@ -79,13 +86,22 @@ export default function Home() {
             <h2>
               Effortless elegance, edited until only the essential remains.
             </h2>
+            <div className="intro-divider" />
           </div>
-          <p>
-            ORÉVIA creates refined essentials for modern femininity: fluid
-            silks, sculptural tailoring, and evening pieces with a hand-finished
-            sensibility. The result is intimate, enduring, and quietly
-            expensive.
-          </p>
+          <div className="intro-body">
+            <p>
+              ORÉVIA creates refined essentials for modern femininity: fluid
+              silks, sculptural tailoring, and evening pieces with a hand-finished
+              sensibility. The result is intimate, enduring, and quietly
+              expensive.
+            </p>
+            <a className="link-arrow" href="/about-orevia">
+              Our story
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+              </svg>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -146,29 +162,14 @@ export default function Home() {
           </div>
           <a className="link-arrow" href="/shop">
             View all{" "}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M7 7h10v10" />
-              <path d="M7 17 17 7" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
             </svg>
           </a>
         </div>
         <div className="product-grid four">
           {featured.map((product, i) => (
-            <ProductCard
-              key={product.slug}
-              product={product}
-              priority={i < 2}
-            />
+            <ProductCard key={product.slug} product={product} priority={i < 2} />
           ))}
         </div>
       </section>
@@ -188,14 +189,8 @@ export default function Home() {
             </a>
           </div>
           <div className="collection-cards">
-            <a
-              className="collection-card"
-              href="/collections#the-atelier-edit"
-            >
-              <img
-                src="/orevia-blazer-model-editorial-clean.jpg"
-                alt="The Atelier Edit collection"
-              />
+            <a className="collection-card" href="/collections#the-atelier-edit">
+              <img src="/orevia-blazer-model-editorial-clean.jpg" alt="The Atelier Edit collection" />
               <span>
                 <strong>The Atelier Edit</strong>
                 <small>
@@ -204,14 +199,8 @@ export default function Home() {
                 </small>
               </span>
             </a>
-            <a
-              className="collection-card"
-              href="/collections#enduring-essentials"
-            >
-              <img
-                src="/orevia-atelier-rail.png"
-                alt="Enduring Essentials collection"
-              />
+            <a className="collection-card" href="/collections#enduring-essentials">
+              <img src="/orevia-atelier-rail.png" alt="Enduring Essentials collection" />
               <span>
                 <strong>Enduring Essentials</strong>
                 <small>
@@ -221,10 +210,7 @@ export default function Home() {
               </span>
             </a>
             <a className="collection-card" href="/collections#evening">
-              <img
-                src="/orevia-dress-editorial-colonnade-clean.jpg"
-                alt="Evening collection"
-              />
+              <img src="/orevia-dress-editorial-colonnade-clean.jpg" alt="Evening collection" />
               <span>
                 <strong>Evening</strong>
                 <small>
@@ -246,16 +232,16 @@ export default function Home() {
             presence. Designed to be reached for often, remembered quietly, and
             worn beyond a season.
           </p>
+          <a className="link-arrow" href="/about-orevia">
+            The house&rsquo;s philosophy
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+            </svg>
+          </a>
         </div>
         <div className="story-images">
-          <img
-            src="/orevia-blazer-model-editorial-clean.jpg"
-            alt="ORÉVIA tailoring editorial"
-          />
-          <img
-            src="/orevia-dress-editorial-colonnade-clean.jpg"
-            alt="ORÉVIA evening editorial"
-          />
+          <img src="/orevia-blazer-model-editorial-clean.jpg" alt="ORÉVIA tailoring editorial" />
+          <img src="/orevia-dress-editorial-colonnade-clean.jpg" alt="ORÉVIA evening editorial" />
         </div>
       </section>
 
@@ -301,19 +287,8 @@ export default function Home() {
           </div>
           <a className="link-arrow" href="/shop?sort=new">
             View edit{" "}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M7 7h10v10" />
-              <path d="M7 17 17 7" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
             </svg>
           </a>
         </div>
@@ -328,8 +303,10 @@ export default function Home() {
       <section className="lookbook-section section-air">
         <div className="shell">
           <div className="lookbook-copy">
-            <p className="eyebrow">Lookbook notes</p>
-            <h2>A quiet study in line, light, and movement.</h2>
+            <div>
+              <p className="eyebrow">Lookbook notes</p>
+              <h2>A quiet study in line, light, and movement.</h2>
+            </div>
             <p>
               Silk against tailoring. Satin softened by evening light. A
               wardrobe that moves between appointments, dinners, and the private
@@ -337,14 +314,8 @@ export default function Home() {
             </p>
           </div>
           <div className="lookbook-grid">
-            <img
-              src="/orevia-dress-editorial-colonnade-clean.jpg"
-              alt="ORÉVIA lookbook dress editorial"
-            />
-            <img
-              src="/orevia-blazer-model-editorial-clean.jpg"
-              alt="ORÉVIA tailoring lookbook"
-            />
+            <img src="/orevia-dress-editorial-colonnade-clean.jpg" alt="ORÉVIA lookbook dress editorial" />
+            <img src="/orevia-blazer-model-editorial-clean.jpg" alt="ORÉVIA tailoring lookbook" />
             <blockquote>
               The strongest pieces are the ones that feel inevitable.
             </blockquote>
