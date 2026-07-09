@@ -136,7 +136,7 @@ main {
 
 .brand-mark {
   justify-self: center;
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: clamp(24px, 3vw, 31px);
   letter-spacing: 0.18em;
 }
@@ -259,7 +259,7 @@ main {
 
 .hero-content h1,
 .hero-line {
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
 }
 
 .hero-line {
@@ -299,7 +299,7 @@ main {
 .hero-meta-panel strong {
   display: block;
   margin-top: 16px;
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: 31px;
   font-weight: 400;
   line-height: 1.05;
@@ -505,7 +505,7 @@ main {
 
 .atelier-standards strong {
   color: var(--ink);
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: 24px;
   font-weight: 400;
 }
@@ -544,7 +544,7 @@ h1, h2, h3, p {
 .story-copy h2,
 .waitlist-card h2 {
   margin: 14px 0 0;
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-weight: 400;
   line-height: 1.02;
 }
@@ -732,7 +732,7 @@ h1, h2, h3, p {
 .cart-page-item a,
 .product-title-line a,
 .product-title-line strong {
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: 25px;
   font-weight: 400;
 }
@@ -833,7 +833,7 @@ h1, h2, h3, p {
 
 .collection-card strong {
   display: block;
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: 28px;
   font-weight: 400;
 }
@@ -960,7 +960,7 @@ h1, h2, h3, p {
   background: var(--ivory);
   padding: 28px;
   color: var(--ink);
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: clamp(24px, 3vw, 34px);
   font-style: italic;
   line-height: 1.15;
@@ -985,7 +985,7 @@ h1, h2, h3, p {
 
 .proof-strip h3 {
   margin: 0;
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: 24px;
   font-weight: 400;
 }
@@ -1159,7 +1159,7 @@ h1, h2, h3, p {
 
 .collection-row h2 {
   margin: 0;
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: clamp(38px, 5vw, 62px);
   font-weight: 400;
 }
@@ -1233,7 +1233,7 @@ h1, h2, h3, p {
 
 .contact-block h2 {
   margin: 0;
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: 34px;
   font-weight: 400;
 }
@@ -1280,7 +1280,7 @@ h1, h2, h3, p {
 
 .product-price {
   margin: 22px 0 0;
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: 31px;
   color: var(--espresso);
 }
@@ -1338,7 +1338,7 @@ h1, h2, h3, p {
 .product-services strong {
   display: block;
   margin-top: 10px;
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: 24px;
   font-weight: 400;
 }
@@ -1411,7 +1411,7 @@ h1, h2, h3, p {
 
 .modal-top h2 {
   margin: 0;
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: 34px;
   font-weight: 400;
 }
@@ -1494,7 +1494,7 @@ h1, h2, h3, p {
 }
 
 .cart-summary strong {
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: 25px;
   font-weight: 400;
 }
@@ -1558,7 +1558,7 @@ h1, h2, h3, p {
 }
 
 .search-result strong {
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: 23px;
   font-weight: 400;
 }
@@ -1586,7 +1586,7 @@ h1, h2, h3, p {
 }
 
 .mobile-nav a {
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: 35px;
 }
 
@@ -1626,7 +1626,7 @@ h1, h2, h3, p {
 .order-note strong {
   display: block;
   margin: 8px 0 18px;
-  font-family: Didot, Bodoni 72, Georgia, serif;
+  font-family: Didot, Bodoni\ 72, Georgia, serif;
   font-size: 34px;
   font-weight: 400;
 }
