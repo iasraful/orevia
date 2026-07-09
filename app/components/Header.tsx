@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import products from "@/data/products.json";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { updateQuantity, removeItem, setCartOpen } from "../store/cartSlice";
 
 interface Product {
   slug: string;
@@ -19,110 +21,23 @@ interface CartItem {
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  // Initialize cart from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem("orevia-cart");
-    if (saved) {
-      try {
-        setCartItems(JSON.parse(saved));
-      } catch (e) {}
-    } else {
-      const defaultCart = [
-        {
-          product: products.find((p) => p.slug === "the-silk-blouse") || products[0],
-          quantity: 1,
-        },
-        {
-          product: products.find((p) => p.slug === "the-tailored-blazer") || products[1],
-          quantity: 1,
-        },
-      ];
-      setCartItems(defaultCart);
-      localStorage.setItem("orevia-cart", JSON.stringify(defaultCart));
-    }
-  }, []);
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const cartOpen = useAppSelector((state) => state.cart.isOpen);
 
-  // Listen to external cart changes to synchronize UI
-  useEffect(() => {
-    const syncCart = () => {
-      const saved = localStorage.getItem("orevia-cart");
-      if (saved) {
-        try {
-          setCartItems(JSON.parse(saved));
-        } catch (e) {}
-      }
-    };
-
-    window.addEventListener("cart-updated", syncCart);
-    return () => {
-      window.removeEventListener("cart-updated", syncCart);
-    };
-  }, []);
-
-  // Handle add-to-cart custom event
-  useEffect(() => {
-    const handleAddToCart = (e: Event) => {
-      const customEvent = e as CustomEvent<Product>;
-      if (!customEvent.detail) return;
-
-      const product = customEvent.detail;
-      setCartItems((prev) => {
-        const existing = prev.find((item) => item.product.slug === product.slug);
-        let nextCart: CartItem[];
-        if (existing) {
-          nextCart = prev.map((item) =>
-            item.product.slug === product.slug
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
-          );
-        } else {
-          nextCart = [...prev, { product, quantity: 1 }];
-        }
-        localStorage.setItem("orevia-cart", JSON.stringify(nextCart));
-        // Notify other listeners
-        window.dispatchEvent(new CustomEvent("cart-updated"));
-        return nextCart;
-      });
-      
-      // Auto open cart drawer when item is added
-      setCartOpen(true);
-    };
-
-    window.addEventListener("add-to-cart", handleAddToCart);
-    return () => {
-      window.removeEventListener("add-to-cart", handleAddToCart);
-    };
-  }, []);
-
-  const updateQuantity = (slug: string, delta: number) => {
-    setCartItems((prev) => {
-      const nextCart = prev
-        .map((item) => {
-          if (item.product.slug === slug) {
-            const nextQty = item.quantity + delta;
-            return { ...item, quantity: nextQty };
-          }
-          return item;
-        })
-        .filter((item) => item.quantity > 0);
-      localStorage.setItem("orevia-cart", JSON.stringify(nextCart));
-      window.dispatchEvent(new CustomEvent("cart-updated"));
-      return nextCart;
-    });
+  const handleUpdateQuantity = (slug: string, delta: number) => {
+    dispatch(updateQuantity({ slug, delta }));
   };
 
-  const removeItem = (slug: string) => {
-    setCartItems((prev) => {
-      const nextCart = prev.filter((item) => item.product.slug !== slug);
-      localStorage.setItem("orevia-cart", JSON.stringify(nextCart));
-      window.dispatchEvent(new CustomEvent("cart-updated"));
-      return nextCart;
-    });
+  const handleRemoveItem = (slug: string) => {
+    dispatch(removeItem(slug));
+  };
+
+  const handleSetCartOpen = (open: boolean) => {
+    dispatch(setCartOpen(open));
   };
 
   // Compute total bag count
@@ -137,10 +52,10 @@ export default function Header() {
   // Filter search results
   const filteredProducts = searchQuery
     ? products.filter(
-        (p) =>
-          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.category.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      (p) =>
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.category.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     : [];
 
   return (
@@ -188,7 +103,7 @@ export default function Header() {
               </svg>
               <span>Search</span>
             </button>
-            <button className="utility-button" onClick={() => setCartOpen(true)}>
+            <button className="utility-button" onClick={() => handleSetCartOpen(true)}>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
                 <path d="M3 6h18" />
@@ -231,13 +146,13 @@ export default function Header() {
 
       {/* Cart Drawer / Layer */}
       <div className={`cart-layer ${cartOpen ? "is-open" : ""}`}>
-        <div className="modal-scrim" onClick={() => setCartOpen(false)} />
+        <div className="modal-scrim" onClick={() => handleSetCartOpen(false)} />
         <div className="cart-drawer">
           <div className="modal-top">
             <h2>Your Edit</h2>
             <button
               className="icon-button"
-              onClick={() => setCartOpen(false)}
+              onClick={() => handleSetCartOpen(false)}
               aria-label="Close cart"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -253,7 +168,7 @@ export default function Header() {
               <a
                 className="btn-primary"
                 href="/shop"
-                onClick={() => setCartOpen(false)}
+                onClick={() => handleSetCartOpen(false)}
                 style={{ marginTop: "24px", display: "inline-block" }}
               >
                 Browse the collection
@@ -268,7 +183,7 @@ export default function Header() {
                     <div>
                       <a
                         href={`/products/${item.product.slug}`}
-                        onClick={() => setCartOpen(false)}
+                        onClick={() => handleSetCartOpen(false)}
                       >
                         {item.product.name}
                       </a>
@@ -277,14 +192,14 @@ export default function Header() {
                       </p>
                       <div className="quantity-control">
                         <button
-                          onClick={() => updateQuantity(item.product.slug, -1)}
+                          onClick={() => handleUpdateQuantity(item.product.slug, -1)}
                           aria-label="Decrease quantity"
                         >
                           —
                         </button>
                         <span>{item.quantity}</span>
                         <button
-                          onClick={() => updateQuantity(item.product.slug, 1)}
+                          onClick={() => handleUpdateQuantity(item.product.slug, 1)}
                           aria-label="Increase quantity"
                         >
                           +
@@ -295,7 +210,7 @@ export default function Header() {
                       <strong>${item.product.price * item.quantity}</strong>
                       <button
                         className="remove-link"
-                        onClick={() => removeItem(item.product.slug)}
+                        onClick={() => handleRemoveItem(item.product.slug)}
                         style={{ marginTop: "12px" }}
                       >
                         Remove
@@ -317,7 +232,7 @@ export default function Header() {
                   <a
                     className="btn-primary full"
                     href="/cart"
-                    onClick={() => setCartOpen(false)}
+                    onClick={() => handleSetCartOpen(false)}
                     style={{ display: "flex", width: "100%", justifyContent: "center" }}
                   >
                     View edit & Checkout

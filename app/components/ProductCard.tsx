@@ -1,5 +1,8 @@
 "use client";
 
+import { useAppDispatch } from "../store/hooks";
+import { addToCart } from "../store/cartSlice";
+
 interface Product {
   slug: string;
   name: string;
@@ -20,9 +23,10 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, priority = false }: ProductCardProps) {
+  const dispatch = useAppDispatch();
+
   const handleAddToBag = () => {
-    // Dispatch a custom event with product details to update the cart
-    window.dispatchEvent(new CustomEvent("add-to-cart", { detail: product }));
+    dispatch(addToCart(product));
   };
 
   return (

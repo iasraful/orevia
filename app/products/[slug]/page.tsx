@@ -4,6 +4,8 @@ import { use } from "react";
 import products from "@/data/products.json";
 import { notFound } from "next/navigation";
 import ProductCard from "@/app/components/ProductCard";
+import { useAppDispatch } from "@/app/store/hooks";
+import { addToCart } from "@/app/store/cartSlice";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -17,9 +19,10 @@ export default function ProductDetailsPage({ params }: PageProps) {
   // Find 3 other products for "Pieces in the same rhythm"
   const relatedProducts = products.filter((p) => p.slug !== slug).slice(0, 3);
 
+  const dispatch = useAppDispatch();
+
   const handleAddToBag = () => {
-    // Dispatch a custom event with product details to update the cart
-    window.dispatchEvent(new CustomEvent("add-to-cart", { detail: product }));
+    dispatch(addToCart(product));
   };
 
   return (

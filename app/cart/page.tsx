@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
+import { useState, FormEvent } from "react";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { updateQuantity, removeItem, clearCart } from "../store/cartSlice";
 
 interface Product {
   slug: string;
@@ -17,46 +19,21 @@ interface CartItem {
 }
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cart.items);
+  
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [orderNumber, setOrderNumber] = useState("");
 
-  // Sync state from localStorage on load
-  useEffect(() => {
-    const saved = localStorage.getItem("orevia-cart");
-    if (saved) {
-      try {
-        setCartItems(JSON.parse(saved));
-      } catch (e) {}
-    }
-  }, []);
-
-  const updateQuantity = (slug: string, delta: number) => {
-    const nextCart = cartItems
-      .map((item) => {
-        if (item.product.slug === slug) {
-          const nextQty = item.quantity + delta;
-          return { ...item, quantity: nextQty };
-        }
-        return item;
-      })
-      .filter((item) => item.quantity > 0);
-    
-    setCartItems(nextCart);
-    localStorage.setItem("orevia-cart", JSON.stringify(nextCart));
-    // Trigger header updates
-    window.dispatchEvent(new CustomEvent("cart-updated"));
+  const handleUpdateQuantity = (slug: string, delta: number) => {
+    dispatch(updateQuantity({ slug, delta }));
   };
 
-  const removeItem = (slug: string) => {
-    const nextCart = cartItems.filter((item) => item.product.slug !== slug);
-    setCartItems(nextCart);
-    localStorage.setItem("orevia-cart", JSON.stringify(nextCart));
-    // Trigger header updates
-    window.dispatchEvent(new CustomEvent("cart-updated"));
+  const handleRemoveItem = (slug: string) => {
+    dispatch(removeItem(slug));
   };
 
   const handleCheckout = (e: FormEvent) => {
@@ -65,9 +42,7 @@ export default function CartPage() {
     const randomNum = Math.floor(100000 + Math.random() * 900000);
     setOrderNumber(`OR-${randomNum}`);
     setSubmitted(true);
-    // Clear cart in storage
-    localStorage.removeItem("orevia-cart");
-    window.dispatchEvent(new CustomEvent("cart-updated"));
+    dispatch(clearCart());
   };
 
   const subtotal = cartItems.reduce(
@@ -140,16 +115,16 @@ export default function CartPage() {
                     </span>
                   </div>
                   <div className="quantity-control">
-                    <button onClick={() => updateQuantity(item.product.slug, -1)}>—</button>
+                    <button onClick={() => handleUpdateQuantity(item.product.slug, -1)}>—</button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.product.slug, 1)}>+</button>
+                    <button onClick={() => handleUpdateQuantity(item.product.slug, 1)}>+</button>
                   </div>
                 </div>
                 <div style={{ textAlign: "right", display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%", alignItems: "flex-end" }}>
                   <strong style={{ fontSize: "21px", color: "var(--espresso)", fontFamily: "Didot, Bodoni\\ 72, Georgia, serif", fontWeight: "normal" }}>
                     ${item.product.price * item.quantity}
                   </strong>
-                  <button className="remove-link" onClick={() => removeItem(item.product.slug)} style={{ cursor: "pointer", display: "inline-block" }}>
+                  <button className="remove-link" onClick={() => handleRemoveItem(item.product.slug)} style={{ cursor: "pointer", display: "inline-block" }}>
                     Remove
                   </button>
                 </div>
