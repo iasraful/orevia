@@ -54,7 +54,7 @@ export default function CartPage() {
     return (
       <div className="page-shell" style={{ maxWidth: "600px", textAlign: "center" }}>
         <p className="eyebrow">Reservation Confirmed</p>
-        <h1 style={{ fontFamily: "Didot, Bodoni\\ 72, Georgia, serif", fontSize: "clamp(32px, 5vw, 54px)", marginBlock: "20px" }}>
+        <h1 style={{ fontFamily: "var(--font-playfair), Didot, 'Bodoni 72', Georgia, serif", fontSize: "clamp(32px, 5vw, 54px)", marginBlock: "20px" }}>
           Thank you for your request.
         </h1>
         <p style={{ color: "var(--espresso)", fontSize: "16px", lineHeight: "1.8", marginBottom: "32px" }}>
@@ -62,7 +62,7 @@ export default function CartPage() {
           A client care associate will contact you at <strong>{email}</strong> within 24 hours to arrange your complimentary fitting and confirm sizing preferences.
         </p>
         <div style={{ padding: "28px", border: "1px solid var(--line)", background: "var(--pearl)", textAlign: "left", marginBottom: "42px" }}>
-          <h3 style={{ fontFamily: "Didot, Bodoni\\ 72, Georgia, serif", fontSize: "20px", marginBottom: "16px" }}>Reservation Details</h3>
+          <h3 style={{ fontFamily: "var(--font-playfair), Didot, 'Bodoni 72', Georgia, serif", fontSize: "20px", marginBottom: "16px" }}>Reservation Details</h3>
           <p style={{ fontSize: "14px", color: "var(--espresso)", margin: "4px 0" }}><strong>Client:</strong> {name}</p>
           <p style={{ fontSize: "14px", color: "var(--espresso)", margin: "4px 0" }}><strong>Address:</strong> {address}</p>
           <p style={{ fontSize: "14px", color: "var(--espresso)", margin: "4px 0" }}><strong>Fitting location:</strong> Sydney Atelier / Correspondence</p>
@@ -101,12 +101,14 @@ export default function CartPage() {
           <div className="cart-page-items">
             {cartItems.map((item) => (
               <div className="cart-page-item" key={item.product.slug}>
-                <img src={item.product.image} alt={item.product.alt} />
+                <a href={`/products/${item.product.slug}`}>
+                  <img src={item.product.image} alt={item.product.alt} />
+                </a>
                 <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                   <div>
                     <a
                       href={`/products/${item.product.slug}`}
-                      style={{ fontSize: "21px", fontFamily: "Didot, Bodoni\\ 72, Georgia, serif", display: "block" }}
+                      style={{ fontSize: "21px", fontFamily: "var(--font-playfair), Didot, 'Bodoni 72', Georgia, serif", display: "block" }}
                     >
                       {item.product.name}
                     </a>
@@ -121,7 +123,7 @@ export default function CartPage() {
                   </div>
                 </div>
                 <div style={{ textAlign: "right", display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%", alignItems: "flex-end" }}>
-                  <strong style={{ fontSize: "21px", color: "var(--espresso)", fontFamily: "Didot, Bodoni\\ 72, Georgia, serif", fontWeight: "normal" }}>
+                  <strong style={{ fontSize: "21px", color: "var(--espresso)", fontFamily: "var(--font-playfair), Didot, 'Bodoni 72', Georgia, serif", fontWeight: "normal" }}>
                     ${item.product.price * item.quantity}
                   </strong>
                   <button className="remove-link" onClick={() => handleRemoveItem(item.product.slug)} style={{ cursor: "pointer", display: "inline-block" }}>
