@@ -18,8 +18,8 @@ export default function ProductDetailsPage({ params }: PageProps) {
   const relatedProducts = products.filter((p) => p.slug !== slug).slice(0, 3);
 
   const handleAddToBag = () => {
-    // Dispatch a custom event to update the bag count in the Header
-    window.dispatchEvent(new CustomEvent("cart-updated"));
+    // Dispatch a custom event with product details to update the cart
+    window.dispatchEvent(new CustomEvent("add-to-cart", { detail: product }));
   };
 
   return (
