@@ -20,8 +20,11 @@ export default function WaitlistForm({ compact = false, id = "waitlist-email" }:
 
   if (submitted) {
     return (
-      <div className={`waitlist-form ${compact ? "compact" : ""} waitlist-success`}>
-        <p>Thank you. You&rsquo;re on the list.</p>
+      <div className="success-note">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+        <span>Thank you. You have been added to the private list.</span>
       </div>
     );
   }
