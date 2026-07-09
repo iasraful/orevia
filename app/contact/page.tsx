@@ -7,42 +7,35 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="shell section-air">
-      <div style={{ marginBottom: "4rem" }}>
+    <div className="page-shell">
+      <div className="page-hero">
         <p className="eyebrow">Correspondence</p>
-        <h1 style={{ marginBottom: "1.5rem" }}>Speak with the maison.</h1>
-        <p
-          style={{
-            fontSize: "1.05rem",
-            color: "var(--muted)",
-            maxWidth: "600px",
-            lineHeight: "1.8",
-          }}
-        >
+        <h1>Speak with the maison.</h1>
+        <p>
           For private launch access, styling questions, or editorial enquiries, write to ORÉVIA directly.
         </p>
       </div>
 
-      <div className="contact-split">
-        {/* Left Side: Contact Info */}
-        <div className="contact-info">
+      <div className="contact-grid">
+        {/* Left column: Client Care */}
+        <div className="contact-block">
           <h2>Client care</h2>
-          <a className="contact-email" href="mailto:info@oreviaclothing.com">
-            info@oreviaclothing.com
-          </a>
-          <p className="contact-address">Sydney, Australia</p>
+          <a href="mailto:info@oreviaclothing.com">info@oreviaclothing.com</a>
+          <p style={{ marginTop: "12px", color: "var(--taupe)", fontSize: "14px" }}>
+            Sydney, Australia
+          </p>
 
-          <div className="contact-links">
+          <div className="contact-services">
             <a href="#private-fittings">Private fittings by request</a>
             <a href="#availability">Launch availability correspondence</a>
             <a href="#editorial">Editorial and styling enquiries</a>
           </div>
         </div>
 
-        {/* Right Side: Mailing list signup */}
-        <div className="contact-form-panel">
+        {/* Right column: Private launch list */}
+        <div className="contact-block">
           <h2>Private launch list</h2>
-          <p>
+          <p style={{ marginBlock: "18px 24px", color: "var(--espresso)", fontSize: "16px" }}>
             Receive the debut collection preview and priority access before the public opening.
           </p>
           <WaitlistForm id="contact-email" />
