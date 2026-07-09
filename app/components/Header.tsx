@@ -22,28 +22,49 @@ export default function Header() {
   const [cartOpen, setCartOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  // Default to 2 preloaded items to match "BAG (2)" in screenshots
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      product: products.find((p) => p.slug === "the-silk-blouse") || products[0],
-      quantity: 1,
-    },
-    {
-      product: products.find((p) => p.slug === "the-tailored-blazer") || products[1],
-      quantity: 1,
-    },
-  ]);
+  // Initialize cart from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("orevia-cart");
+    if (saved) {
+      try {
+        setCartItems(JSON.parse(saved));
+      } catch (e) {}
+    } else {
+      const defaultCart = [
+        {
+          product: products.find((p) => p.slug === "the-silk-blouse") || products[0],
+          quantity: 1,
+        },
+        {
+          product: products.find((p) => p.slug === "the-tailored-blazer") || products[1],
+          quantity: 1,
+        },
+      ];
+      setCartItems(defaultCart);
+      localStorage.setItem("orevia-cart", JSON.stringify(defaultCart));
+    }
+  }, []);
 
-  // Compute total bag count
-  const bagCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  // Listen to external cart changes to synchronize UI
+  useEffect(() => {
+    const syncCart = () => {
+      const saved = localStorage.getItem("orevia-cart");
+      if (saved) {
+        try {
+          setCartItems(JSON.parse(saved));
+        } catch (e) {}
+      }
+    };
 
-  // Compute subtotal
-  const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.product.price * item.quantity,
-    0
-  );
+    window.addEventListener("cart-updated", syncCart);
+    return () => {
+      window.removeEventListener("cart-updated", syncCart);
+    };
+  }, []);
 
+  // Handle add-to-cart custom event
   useEffect(() => {
     const handleAddToCart = (e: Event) => {
       const customEvent = e as CustomEvent<Product>;
@@ -52,14 +73,20 @@ export default function Header() {
       const product = customEvent.detail;
       setCartItems((prev) => {
         const existing = prev.find((item) => item.product.slug === product.slug);
+        let nextCart: CartItem[];
         if (existing) {
-          return prev.map((item) =>
+          nextCart = prev.map((item) =>
             item.product.slug === product.slug
               ? { ...item, quantity: item.quantity + 1 }
               : item
           );
+        } else {
+          nextCart = [...prev, { product, quantity: 1 }];
         }
-        return [...prev, { product, quantity: 1 }];
+        localStorage.setItem("orevia-cart", JSON.stringify(nextCart));
+        // Notify other listeners
+        window.dispatchEvent(new CustomEvent("cart-updated"));
+        return nextCart;
       });
       
       // Auto open cart drawer when item is added
@@ -73,8 +100,8 @@ export default function Header() {
   }, []);
 
   const updateQuantity = (slug: string, delta: number) => {
-    setCartItems((prev) =>
-      prev
+    setCartItems((prev) => {
+      const nextCart = prev
         .map((item) => {
           if (item.product.slug === slug) {
             const nextQty = item.quantity + delta;
@@ -82,13 +109,30 @@ export default function Header() {
           }
           return item;
         })
-        .filter((item) => item.quantity > 0)
-    );
+        .filter((item) => item.quantity > 0);
+      localStorage.setItem("orevia-cart", JSON.stringify(nextCart));
+      window.dispatchEvent(new CustomEvent("cart-updated"));
+      return nextCart;
+    });
   };
 
   const removeItem = (slug: string) => {
-    setCartItems((prev) => prev.filter((item) => item.product.slug !== slug));
+    setCartItems((prev) => {
+      const nextCart = prev.filter((item) => item.product.slug !== slug);
+      localStorage.setItem("orevia-cart", JSON.stringify(nextCart));
+      window.dispatchEvent(new CustomEvent("cart-updated"));
+      return nextCart;
+    });
   };
+
+  // Compute total bag count
+  const bagCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  // Compute subtotal
+  const subtotal = cartItems.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,
+    0
+  );
 
   // Filter search results
   const filteredProducts = searchQuery
@@ -156,7 +200,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Slide-out Mobile Panel using exact live site CSS classes */}
+      {/* Slide-out Mobile Panel */}
       <div className={`mobile-menu ${mobileOpen ? "is-open" : ""}`}>
         <div className="menu-scrim" onClick={() => setMobileOpen(false)} />
         <div className="mobile-panel">
@@ -185,7 +229,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Cart Drawer / Layer using exact live site CSS classes */}
+      {/* Cart Drawer / Layer */}
       <div className={`cart-layer ${cartOpen ? "is-open" : ""}`}>
         <div className="modal-scrim" onClick={() => setCartOpen(false)} />
         <div className="cart-drawer">
@@ -272,11 +316,11 @@ export default function Header() {
                 <div style={{ marginTop: "24px" }}>
                   <a
                     className="btn-primary full"
-                    href="/contact#availability"
+                    href="/cart"
                     onClick={() => setCartOpen(false)}
                     style={{ display: "flex", width: "100%", justifyContent: "center" }}
                   >
-                    Request private preview access
+                    View edit & Checkout
                   </a>
                 </div>
               </div>
@@ -285,7 +329,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Search Modal using exact live site CSS classes */}
+      {/* Search Modal */}
       <div className={`search-modal ${searchOpen ? "is-open" : ""}`}>
         <div className="modal-scrim" onClick={() => setSearchOpen(false)} />
         <div className="search-panel">
