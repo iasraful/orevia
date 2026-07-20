@@ -169,7 +169,7 @@ export default function Header() {
                 className="btn-primary"
                 href="/shop"
                 onClick={() => handleSetCartOpen(false)}
-                style={{ marginTop: "24px", display: "inline-block" }}
+                style={{ marginTop: "24px", display: "flex", justifyContent: "center", alignItems: "center", alignSelf: "center" }}
               >
                 Browse the collection
               </a>
@@ -179,7 +179,12 @@ export default function Header() {
               <div className="cart-items">
                 {cartItems.map((item) => (
                   <div className="cart-item" key={item.product.slug}>
-                    <img src={item.product.image} alt={item.product.alt} />
+                    <a
+                      href={`/products/${item.product.slug}`}
+                      onClick={() => handleSetCartOpen(false)}
+                    >
+                      <img src={item.product.image} alt={item.product.alt} />
+                    </a>
                     <div>
                       <a
                         href={`/products/${item.product.slug}`}

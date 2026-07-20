@@ -44,7 +44,7 @@ export default function ProductDetailsPage({ params }: PageProps) {
         {/* Right Column: Info & Details */}
         <div>
           <p className="eyebrow">{product.category}</p>
-          <h1 style={{ marginTop: "14px", fontFamily: "Didot, Bodoni 72, Georgia, serif", fontWeight: 400, lineHeight: 1.02, fontSize: "clamp(42px, 6vw, 78px)" }}>{product.name}</h1>
+          <h1 style={{ marginTop: "14px", fontFamily: "var(--font-playfair), Didot, 'Bodoni 72', Georgia, serif", fontWeight: 400, lineHeight: 1.02, fontSize: "clamp(42px, 6vw, 78px)" }}>{product.name}</h1>
           <div className="product-price">${product.price}</div>
           <p className="lead" style={{ marginTop: "24px" }}>
             {product.longDescription || product.description}
